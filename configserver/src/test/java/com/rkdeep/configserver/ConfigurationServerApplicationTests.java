@@ -1,13 +1,12 @@
-package com.rkdeep.license;
+package com.rkdeep.configserver;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LicenseServiceApplicationTests {
+class ConfigurationServerApplicationTests {
 
-	@Disabled
+	@Test
 	void contextLoads() {
 	}
 
