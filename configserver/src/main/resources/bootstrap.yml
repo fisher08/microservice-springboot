@@ -3,18 +3,18 @@ spring:
     name: config-server
   profiles:
     active:
-      - vault
+      - native
   cloud:
     config:
       server:
-        vault:
-          port: 8200
-          host: 0.0.0.0
-          kv-version: 2
-          backend: licensing-service
-          profileSeparator: /
-#        native:
-#          search-locations: classpath:/config
+#        vault:
+#          port: 8200
+#          host: 0.0.0.0
+#          kv-version: 2
+#          backend: licensing-service
+#          profileSeparator: /
+        native:
+          search-locations: classpath:/config
 #          git:
 #            uri: https://github.com/ihuaylupo/config.git
 #            searchPaths: licensingservice
