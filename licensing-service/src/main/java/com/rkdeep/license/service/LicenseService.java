@@ -2,7 +2,9 @@ package com.rkdeep.license.service;
 
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 
 import com.rkdeep.license.config.ServiceConfig;
 import com.rkdeep.license.model.License;
@@ -11,6 +13,9 @@ import com.rkdeep.license.repository.LicenseRepository;
 import com.rkdeep.license.service.client.OrganizationDiscoveryClient;
 import com.rkdeep.license.service.client.OrganizationFeignClient;
 import com.rkdeep.license.service.client.OrganizationRestTemplateClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -18,6 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LicenseService {
 
+    Logger logger = LoggerFactory.getLogger(LicenseService.class);
     @Autowired
     MessageSource messages;
 
@@ -99,7 +105,22 @@ public class LicenseService {
 
     }
 
-    public List<License> getLicensesByOrganization(String organizationId) {
+    private void randomlyRunLong() throws TimeoutException {
+        Random rand = new Random();
+        int randomNum = rand.nextInt(3) + 1;
+        if (randomNum==3) sleep();
+    }
+    private void sleep() throws TimeoutException {
+        try {
+            Thread.sleep(5000);
+            throw new java.util.concurrent.TimeoutException();
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+    }
+    @CircuitBreaker(name = "licenseService")
+    public List<License> getLicensesByOrganization(String organizationId) throws TimeoutException {
+        randomlyRunLong();
         return licenseRepository.findByOrganizationId(organizationId);
     }
 }

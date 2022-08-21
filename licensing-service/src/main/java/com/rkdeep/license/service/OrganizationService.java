@@ -1,4 +1,4 @@
-package com.optimagrowth.license.service;
+package com.rkdeep.license.service;
 
 import org.springframework.stereotype.Service;
 
